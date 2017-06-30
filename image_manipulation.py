@@ -50,3 +50,25 @@ def plotHistogram(img, n_channels=3):
         plt.plot(hist)
 
     plt.show()
+
+
+def intensityDist(img):
+    """Return the normalized intensity distribution in the x-axis for the given image."""
+
+    pix_count = np.zeros(img.shape[1])
+
+    # Count number of pixels for x-axis
+    for i in range(0, img.shape[1] - 1):
+        img_col = img[:, i]
+        pix_count[i] = cv2.countNonZero(img[:, i])
+
+    # Store max and min values for normalization
+    img_max = pix_count.max()
+    img_min = pix_count.min()
+
+    # Normalize the values
+    for i in range(0, img.shape[1] - 1):
+        pix_count[i] = ((pix_count[i] - img_min) /
+                        (img_max - img_min))
+
+    return pix_count
